@@ -15,6 +15,7 @@
       <th>email</th>
       <th>Edit</th>
       <th>Hapus</th>
+      <th>addresses</th>
     </tr>
     <% for(var i = 0; i < dataJsonContact.length; i++) {%>
     <tr>
@@ -25,6 +26,7 @@
       <td><%= dataJsonContact[i].email %></td>
       <td><a href="/contacts/edit/<%= dataJsonContact[i].id%>">edit</a></td>
       <td><a href="/contacts/delete/<%= dataJsonContact[i].id%>">hapus</a></td>
+      <td><a href="/contacts/addresses/<%= dataJsonContact[i].id%>">addresses</a></td>
     </tr>
     <%}%>
   </table>

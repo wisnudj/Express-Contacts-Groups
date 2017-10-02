@@ -31,6 +31,21 @@ app.get('/contacts', (req, res) => {
   });
 })
 
+app.get('/contacts/addresses/:id', (req, res) => {
+  db.all(`SELECT * FROM Address where id_contact ="${req.param('id')}"`, (err, rows) => {
+    db.all(`SELECT * FROM Contacts where id = "${req.param('id')}"`, (er, rowscontact) => {
+      res.render('contactAddress', {dataJSONAddresses: rows, dataJsonContact: rowscontact})
+    })
+  })
+})
+
+app.post('/contacts/addresses/:id', (req, res) => {
+  db.all(`SELECT * FROM Contacts where id = "${req.param('id')}"`, (er, rowscontact) => {
+    db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', "${req.param('id')}")`)
+    res.render('contacts', {dataJsonContact: rowscontact})
+  })
+})
+
 
 /*       FORM TAMBAH CONTACT        */
 app.post('/contacts', (req, res) => {
