@@ -27,6 +27,11 @@
       <%}%>
     </table>
     <form action="/addresses" method="post">
+      <select name="id_contact">
+        <%for (var i = 0; i < dataJsonContact.length; i++) {%>
+        <option value="<%=dataJsonContact[i].id%>"><%=dataJsonContact[i].nama%></option>
+        <%}%>
+      </select>
       <p>
         <label for="">street</label>
         <input type="input" name="street">
@@ -38,10 +43,6 @@
       <p>
         <label for="">zipcode</label>
         <input type="input" name="zipcode">
-      </p>
-      <p>
-        <label for="">id contact</label>
-        <input type="input" name="id_contact">
       </p>
       <p>
         <input type="submit" value="submit">

@@ -19,6 +19,11 @@
         <label for="">zipcode:</label>
         <input type="input" name="zipcode" value="<%= dataJSONAddresses[0].zipcode%>">
       </p>
+      <select name="id_contact">
+        <%for(var i = 0; i < dataJsonContact.length; i++) {%>
+          <option value="<%= dataJsonContact[i].id%>"><%=dataJsonContact[i].nama%></option>
+        <%}%>
+      </select>
       <p>
         <input type="submit" value="submit">
       </p>

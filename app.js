@@ -165,6 +165,10 @@ app.get('/profiles/delete/:id', (req, res) => {
 
 /*             UPDATE PROFILE              */
 app.get('/profiles/edit/:id', (req, res) => {
+  var joinquery = "SELECT Profile.id, Profile.username, Profile.password, Contacts.nama FROM Profile LEFT JOIN Contacts ON Contacts.id = Profile.id_contact"
+
+  var contactquery = 'SELECT * FROM Contacts'
+
   db.all(`SELECT * FROM Profile WHERE id = "${req.param('id')}"`, (err, rows) => {
     console.log(rows);
     res.render('editProfile', {dataJSONProfile:rows})
@@ -187,8 +191,9 @@ app.get('/addresses', (req, res) => {
   var contactquery = 'SELECT * FROM Contacts'
 
   db.all(joinqueryaddress, (err, rows) => {
-    console.log(rows);
-    res.render('addresses', {dataJSONAddresses: rows})
+    db.all(contactquery, (err, rowscontact) => {
+        res.render('addresses', {dataJSONAddresses: rows, dataJsonContact: rowscontact})
+    })
   })
 })
 
@@ -213,15 +218,19 @@ app.get('/addresses/delete/:id', (req, res) => {
 /*          FORM UPDATE ADDRESSES             */
 app.get('/addresses/edit/:id', (req, res) => {
   db.all(`SELECT * FROM Address WHERE id = "${req.param('id')}"`, (err, rows) => {
-    console.log(rows);
-    res.render('editAddresses', {dataJSONAddresses:rows})
+    var contactquery = 'SELECT * FROM Contacts'
+    db.all(contactquery, (err, rowscontact) => {
+        res.render('editAddresses', {dataJSONAddresses:rows, dataJsonContact: rowscontact})
+        console.log(rows);
+        console.log(rowscontact);
+    })
   })
 })
 
 app.post('/addresses/edit/:id', (req, res) => {
   var query = "UPDATE Address SET street = '" + req.body.street + "', city = '" +
-  req.body.city + "', zipcode = '" +
-  req.body.zipcode + "' WHERE id = " + req.param('id')
+  req.body.city + "', zipcode = '" + req.body.zipcode + "', id_contact = '" + req.body.id_contact +
+  "' WHERE id = " + req.param('id')
   db.all(query, (err, rows) => {
     console.log(err);
     res.redirect('../../addresses')
