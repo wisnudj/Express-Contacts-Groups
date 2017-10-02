@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Halaman Addresses</title>
+  </head>
+  <body>
+    <h1>Halaman Addresses</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>street</th>
+        <th>city</th>
+        <th>zipcode</th>
+      </tr>
+      <%for(var i = 0; i < dataJSONAddresses.length; i++) {%>
+      <tr>
+        <td><%= dataJSONAddresses[i].id%></td>
+        <td><%= dataJSONAddresses[i].street%></td>
+        <td><%= dataJSONAddresses[i].city%></td>
+        <td><%= dataJSONAddresses[i].zipcode%></td>
+        <td><a href="/addresses/edit/<%=dataJSONAddresses[i].id%>">edit</a></td>
+        <td><a href="/addresses/delete/<%=dataJSONAddresses[i].id%>">delete</a></td>
+      </tr>
+      <%}%>
+    </table>
+    <form action="/addresses" method="post">
+      <p>
+        <label for="">street</label>
+        <input type="input" name="street">
+      </p>
+      <p>
+        <label for="">city</label>
+        <input type="input" name="city">
+      </p>
+      <p>
+        <label for="">zipcode</label>
+        <input type="input" name="zipcode">
+      </p>
+      <p>
+        <input type="submit" value="submit">
+      </p>
+    </form>
+  </body>
+</html>

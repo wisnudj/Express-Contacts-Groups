@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Contacts</title>
+  </head>
+  <body>
+    <form action="/contacts/edit/<%= dataJsonContact[0].id %>" method="post">
+      <p>
+        <label for="">nama:</label>
+        <input type="text" name="nama" value="<%= dataJsonContact[0].nama %>">
+      </p>
+      <p>
+        <label for="">company:</label>
+        <input type="text" name="company" value="<%= dataJsonContact[0].company %>">
+      </p>
+      <p>
+        <label for="">telp number:</label>
+        <input type="text" name="telp_number" value="<%= dataJsonContact[0].telp_number %>">
+      </p>
+      <p>
+        <label for="">email:</label>
+        <input type="text" name="email" value="<%= dataJsonContact[0].email %>">
+      </p>
+      <p>
+        <input type="submit" value="submit">
+      </p>
+    </form>
+  </body>
+</html>

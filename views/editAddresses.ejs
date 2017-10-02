@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Addresses</title>
+  </head>
+  <body>
+    <h1>Halaman Edit Addresses</h1>
+    <form action="/addresses/edit/<%= dataJSONAddresses[0].id%>" method="post">
+      <p>
+        <label for="">street:</label>
+        <input type="input" name="street" value="<%= dataJSONAddresses[0].street%>">
+      </p>
+      <p>
+        <label for="">city:</label>
+        <input type="input" name="city" value="<%= dataJSONAddresses[0].city%>">
+      </p>
+      <p>
+        <label for="">zipcode:</label>
+        <input type="input" name="zipcode" value="<%= dataJSONAddresses[0].zipcode%>">
+      </p>
+      <p>
+        <input type="submit" value="submit">
+      </p>
+    </form>
+  </body>
+</html>

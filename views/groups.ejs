@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Halaman Group</title>
+  </head>
+  <body>
+    <h1>Halaman Groups</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name of Groups</th>
+      </tr>
+      <% for(var i = 0; i < dataJSONGroups.length; i++) {%>
+      <tr>
+        <td><%= dataJSONGroups[i].id %></td>
+        <td><%= dataJSONGroups[i].name_of_group %></td>
+
+        <td><a href="/groups/edit/<%= dataJSONGroups[i].id%>">edit</a></td>
+        <td><a href="/groups/delete/<%= dataJSONGroups[i].id%>">hapus</a></td>
+      </tr>
+      <%}%>
+    </table>
+
+    <form action="/groups" method="post">
+      <p>
+        <label for="">Name of Groups: </label>
+        <input type="text" name="name_of_group">
+      </p>
+      <p><input type="submit" value="submit"></p>
+    </form>
+  </body>
+</html>

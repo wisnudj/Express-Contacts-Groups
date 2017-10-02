@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Profile</title>
+  </head>
+  <body>
+    <h1>dataJSONProfile</h1>
+    <p><%=data%></p>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>ID Contact</th>
+        <th>Nama</th>
+      </tr>
+      <% for(var i = 0; i < dataJSONProfile.length; i++) { %>
+      <tr>
+        <td><%=dataJSONProfile[i].id%></td>
+        <td><%=dataJSONProfile[i].username%></td>
+        <td><%=dataJSONProfile[i].password%></td>
+        <td><%=dataJSONProfile[i].id_contact%></td>
+        <td><%=dataJSONProfile[i].nama%></td>
+        <td><a href="/profiles/edit/<%= dataJSONProfile[i].id%>">edit</a></td>
+        <td><a href="/profiles/delete/<%= dataJSONProfile[i].id%>">delete</a></td>
+      </tr>
+      <% } %>
+    </table>
+    <form action="profiles" method="post">
+      <p><%dataJsonContact[0].id%></p>
+      <select name="id_contact">
+        <%for(var i = 0; i < dataJsonContact.length; i++) {%>
+        <option value="<%=dataJsonContact[i].id%>"><%=dataJsonContact[i].nama%></option>
+        <%}%>
+      </select>
+      <p>
+        <label for="">username:</label>
+        <input type="input" name="username">
+      </p>
+      <p>
+        <label for="">password</label>
+        <input type="input" name="password">
+      </p>
+      <p>
+        <input type="submit" value="submit">
+      </p>
+    </form>
+  </body>
+</html>

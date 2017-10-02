@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contacts</title>
+</head>
+<body>
+  <h1>Halaman Contacts</h1>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Nama</th>
+      <th>Company</th>
+      <th>telp_number</th>
+      <th>email</th>
+      <th>Edit</th>
+      <th>Hapus</th>
+    </tr>
+    <% for(var i = 0; i < dataJsonContact.length; i++) {%>
+    <tr>
+      <td><%= dataJsonContact[i].id %></td>
+      <td><%= dataJsonContact[i].nama %></td>
+      <td><%= dataJsonContact[i].company %></td>
+      <td><%= dataJsonContact[i].telp_number %></td>
+      <td><%= dataJsonContact[i].email %></td>
+      <td><a href="/contacts/edit/<%= dataJsonContact[i].id%>">edit</a></td>
+      <td><a href="/contacts/delete/<%= dataJsonContact[i].id%>">hapus</a></td>
+    </tr>
+    <%}%>
+  </table>
+  <form action="/contacts" method="post">
+    <p>
+      <label for="">nama:</label>
+      <input type="text" name="nama">
+    </p>
+    <p>
+      <label for="">company:</label>
+      <input type="text" name="company">
+    </p>
+    <p>
+      <label for="">telp number:</label>
+      <input type="text" name="telp_number">
+    </p>
+    <p>
+      <label for="">email:</label>
+      <input type="text" name="email">
+    </p>
+    <p>
+      <input type="submit" value="submit">
+    </p>
+  </form>
+</body>
+</html>

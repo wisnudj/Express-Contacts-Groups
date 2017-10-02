@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Edit Group</title>
+  </head>
+  <body>
+    <form action="/groups/edit/<%= dataJSONGroups[0].id %>" method="post">
+      <p>
+        <label for="">Name of Groups: </label>
+        <input type="text" name="name_of_group"value="<%= dataJSONGroups[0].name_of_group%>">
+      </p>
+      <p>
+        <input type="submit" value="submit">
+      </p>
+    </form>
+  </body>
+</html>
