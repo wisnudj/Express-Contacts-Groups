@@ -183,16 +183,19 @@ app.post('/profiles/edit/:id', (req, res) => {
 
 /*             MENU Addresses             */
 app.get('/addresses', (req, res) => {
-  db.all(`SELECT * FROM Address`, (err, rows) => {
+  var joinqueryaddress = "SELECT Address.id, Address.street, Address.city, Address.zipcode, Contacts.nama FROM Address LEFT JOIN Contacts ON Contacts.id = Address.id_contact"
+  var contactquery = 'SELECT * FROM Contacts'
+
+  db.all(joinqueryaddress, (err, rows) => {
+    console.log(rows);
     res.render('addresses', {dataJSONAddresses: rows})
-    console.log(rows.body);
   })
 })
 
 
 /*            FORM TAMBAH ADDRESSES            */
 app.post('/addresses', (req, res) => {
-  db.run(`INSERT INTO Address (street, city, zipcode) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}')`)
+  db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', '${req.body.id_contact}')`)
   res.redirect('addresses')
   console.log(req.body);
 })

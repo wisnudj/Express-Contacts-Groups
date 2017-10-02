@@ -12,6 +12,7 @@
         <th>street</th>
         <th>city</th>
         <th>zipcode</th>
+        <th>id contact</th>
       </tr>
       <%for(var i = 0; i < dataJSONAddresses.length; i++) {%>
       <tr>
@@ -19,6 +20,7 @@
         <td><%= dataJSONAddresses[i].street%></td>
         <td><%= dataJSONAddresses[i].city%></td>
         <td><%= dataJSONAddresses[i].zipcode%></td>
+        <td><%= dataJSONAddresses[i].nama%></td>
         <td><a href="/addresses/edit/<%=dataJSONAddresses[i].id%>">edit</a></td>
         <td><a href="/addresses/delete/<%=dataJSONAddresses[i].id%>">delete</a></td>
       </tr>
@@ -36,6 +38,10 @@
       <p>
         <label for="">zipcode</label>
         <input type="input" name="zipcode">
+      </p>
+      <p>
+        <label for="">id contact</label>
+        <input type="input" name="id_contact">
       </p>
       <p>
         <input type="submit" value="submit">

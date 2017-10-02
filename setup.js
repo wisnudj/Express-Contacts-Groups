@@ -51,7 +51,7 @@ db.run("CREATE TABLE IF NOT EXISTS Address (id INTEGER PRIMARY KEY AUTOINCREMENT
   }
 })
 
-//db.run("ALTER TABLE Profile ADD id_contact INTEGER REFERENCES Contacts (id)")
+//db.run("ALTER TABLE Address ADD id_contact INTEGER REFERENCES Contacts (id)")
 
 /*db.run("CREATE UNIQUE INDEX UNIQUE_NAME ON Profile(id_contact)", (err) => {
   console.log(err);
