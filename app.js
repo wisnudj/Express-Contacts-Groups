@@ -27,7 +27,6 @@ app.get('/', function(req, res) {
 app.get('/contacts', (req, res) => {
   db.all('SELECT * FROM Contacts',(err, rows)=>{
     res.render('contacts',{dataJsonContact:rows});
-    console.log(rows.body);
   });
 })
 
@@ -39,8 +38,15 @@ app.get('/contacts/addresses/:id', (req, res) => {
   })
 })
 
-app.post('/contacts/addresses/:id', (req, res) => {
+/*app.post('/contacts/addresses/:id', (req, res) => {
   db.all(`SELECT * FROM Contacts where id = "${req.param('id')}"`, (er, rowscontact) => {
+    db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', "${req.param('id')}")`)
+    res.render('contactAddress', {dataJsonContact: rowscontact})
+  })
+})*/
+
+app.post('/contacts/addresses/:id', (req, res) => {
+  db.all(`SELECT * FROM Contacts`, (err, rowscontact) => {
     db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', "${req.param('id')}")`)
     res.render('contacts', {dataJsonContact: rowscontact})
   })
