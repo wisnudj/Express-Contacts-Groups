@@ -1,0 +1,68 @@
+const sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('data.db', (err) => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log('Connected to the in-memory SQlite database.');
+});
+
+
+class Contacts {
+    constructor(data) {
+      this.id = data.id
+      this.nama = data.nama
+      this.company = data.company
+      this.telp_number = data.telp_number
+      this.email = data.email
+    }
+
+    static findAll(cb) {
+      db.all(`SELECT * FROM Contacts`, (err, rows) => {
+        var arrOfObject = []
+
+        for(var i = 0; i < rows.length; i++) {
+          arrOfObject.push(new Contacts(rows[i]))
+        }
+        cb(arrOfObject)
+      })
+    }
+
+    /*static insertData(reqBody, cb) {
+      db.run(`INSERT into Contacts (nama, company, telp_number, email) VALUES ('${reqBody.nama}','${reqBody.company}','${reqBody.telp_number}','${reqBody.email}')`)
+      console.log(reqBody);
+      cb()
+    }*/
+
+    static insertData(arrOfObject) {
+      var contacts = new Contacts(arrOfObject)
+      db.run(`INSERT into Contacts (nama, company, telp_number, email) VALUES ('${contacts.nama}','${contacts.company}','${contacts.telp_number}','${contacts.email}')`)
+      console.log(arrOfObject);
+    }
+
+    static deleteData(reqBody, cb) {
+      db.all(`DELETE from Contacts WHERE id = "${reqBody}"`,(err, rows)=>{
+        cb()
+      });
+    }
+
+    static findOne(reqBody, cb) {
+      db.all(`SELECT * FROM Contacts WHERE id = "${reqBody}"`, (err, rows) => {
+        cb(rows)
+      })
+    }
+
+    static updateData(req) {
+      var str = "update Contacts set nama ='" +req.body.nama+ "',";
+      str += "company = '" +req.body.company+"',";
+      str += "telp_number = '"+req.body.telp_number+"',";
+      str += "email = '"+req.body.email+"'";
+      str += "WHERE id = "+req.param('id');
+      db.all(str,(err)=>{
+        if(err) {
+          console.log('error');
+        }
+      });
+    }
+}
+
+module.exports = Contacts
