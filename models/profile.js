@@ -14,15 +14,52 @@ class Profile {
     this.id_contact = data.id_contact;
   }
 
-  static findAll(cb) {
-    db.all(`SELECT * FROM Profile`, (err, rows) => {
-      var arrOfObject = []
+  static findAll() {
+    var object_promise = new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM Profile`, (err, rows) => {
+        var arrOfObject = []
 
-      for(var i = 0; i < rows.length; i++) {
-        arrOfObject.push(new Profile(rows[i]))
-      }
-      cb(arrOfObject)
+        for(var i = 0; i < rows.length; i++) {
+          arrOfObject.push(new Profile(rows[i]))
+        }
+        resolve(arrOfObject)
+      })
     })
+    return object_promise
+  }
+
+  static insertData(arrOfObject) {
+    var object_promise = new Promise((resolve, reject) => {
+      var profile = new Profile(arrOfObject)
+      db.run(`INSERT INTO Profile (username, password, id_contact) VALUES ('${profile.username}', '${profile.password}', '${profile.id_contact}')`)
+    })
+    return object_promise
+  }
+
+  static deleteData(reqBody) {
+    db.all(`DELETE FROM Profile WHERE id = "${reqBody}"`)
+  }
+
+  static findOne(reqBody) {
+    var object_promise = new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM Profile WHERE id = "${reqBody}"`, (err, rows) => {
+        resolve(rows)
+      })
+    })
+
+    return object_promise
+  }
+
+  static updateData(req) {
+    var object_promise = new Promise((resolve, reject) => {
+      var query = "UPDATE Profile SET username = '" +
+      req.body.username + "', password = '" +
+      req.body.password + "' WHERE id = " +
+      req.param('id')
+
+      db.all(query)
+    })
+    return object_promise
   }
 }
 

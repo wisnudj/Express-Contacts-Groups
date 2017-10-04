@@ -14,12 +14,10 @@ var db = new sqlite3.Database('data.db', (err) => {
 
 /*        MENU Contacts      */
 router.get('/contacts', (req, res) => {
-  /*db.all('SELECT * FROM Contacts',(err, rows)=>{
-    res.render('contacts',{dataJsonContact:rows});
-  }); */
-  Contact.findAll(function (rowscontact) {
-    res.render('contacts',{dataJsonContact:rowscontact});
+  Contact.findAll().then((value) => {
+    res.render('contacts',{dataJsonContact:value});
   })
+
 })
 
 
@@ -33,14 +31,8 @@ router.post('/contacts', (req, res) => {
 
 /*        HAPUS CONTACT           */
 router.get('/delete/:id', (req, res) => {
-  /*db.all(`DELETE from Contacts WHERE id = "${req.params.id}"`,(err, rows)=>{
-    console.log(err);
-
-  }); */
-  Contact.deleteData(req.params.id, function () {
-    console.log(req.params);
-    res.redirect('/contacts');
-  })
+  Contact.deleteData(req.params.id)
+  res.redirect('/contacts')
 })
 
 /*        UPDATE CONTACT         */
@@ -49,22 +41,15 @@ router.get('/edit/:id', (req, res) => {
     console.log(rows);
     res.render('editContacts',{dataJsonContact:rows});
   }); */
-  Contact.findOne(req.params.id, function (rowscontact) {
+  /*Contact.findOne(req.params.id, function (rowscontact) {
     res.render('editContacts', {dataJsonContact: rowscontact})
+  }) */
+  Contact.findOne(req.params.id).then((value) => {
+    res.render('editContacts', {dataJsonContact: value})
   })
 })
 
 router.post('/edit/:id', (req, res) => {
-  /*var str = "update Contacts set nama ='" +req.body.nama+ "',";
-  str += "company = '" +req.body.company+"',";
-  str += "telp_number = '"+req.body.telp_number+"',";
-  str += "email = '"+req.body.email+"'";
-  str += "WHERE id = "+req.param('id');
-  db.all(str,(err, rows)=>{
-    console.log(err);
-    res.redirect('../../contacts');
-    console.log(rows.body);
-  }); */
 
   Contact.updateData(req)
     res.redirect('../../contacts');

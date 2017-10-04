@@ -13,29 +13,17 @@ var db = new sqlite3.Database('data.db', (err) => {
 
 /*             MENU Addresses             */
 router.get('/addresses', (req, res) => {
-  /*var joinqueryaddress = "SELECT Address.id, Address.street, Address.city, Address.zipcode, Contacts.nama FROM Address LEFT JOIN Contacts ON Contacts.id = Address.id_contact"
-  var contactquery = 'SELECT * FROM Contacts'
 
-  db.all(joinqueryaddress, (err, rows) => {
-    db.all(contactquery, (err, rowscontact) => {
-        res.render('addresses', {dataJSONAddresses: rows, dataJsonContact: rowscontact})
-    })
-  }) */
-
-  Addresses.findAll(function(arrOfObjectAddresses) {
-    Contact.findAll(function(arrOfObjectContact) {
-      //arrOfObjectAddresses[0].nama = 'wisnu'
-      console.log(arrOfObjectAddresses[0]);
-      for(var i = 0; i < arrOfObjectAddresses.length; i++) {
-      for(var j = 0; j < arrOfObjectContact.length; j++) {
-        if(arrOfObjectAddresses[i].id_contact == arrOfObjectContact[j].id) {
-          arrOfObjectAddresses[i].nama = arrOfObjectContact[j].nama
+  Addresses.findAll().then((valueAddress) => {
+    Contact.findAll().then((valueContact) => {
+      for(var i = 0; i < valueAddress.length; i++) {
+        for(var j = 0; j < valueContact.length; j++) {
+          if(valueAddress[i].id_contact == valueContact[j].id) {
+            valueAddress[i].nama = valueContact[j].nama
+          }
         }
       }
-    }
-
-      console.log(arrOfObjectAddresses);
-      res.render('addresses', {dataJSONAddresses: arrOfObjectAddresses, dataJsonContact: arrOfObjectContact})
+      res.render('addresses', {dataJSONAddresses: valueAddress, dataJsonContact: valueContact})
     })
   })
 })
@@ -43,28 +31,35 @@ router.get('/addresses', (req, res) => {
 
 /*            FORM TAMBAH ADDRESSES            */
 router.post('/addresses', (req, res) => {
-  db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', '${req.body.id_contact}')`)
-  res.redirect('addresses')
-  console.log(req.body);
+  /*db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', '${req.body.id_contact}')`) */
+  Addresses.insertData(req.body)
+  res.redirect('/addresses')
+
+  //console.log(req.body);
 })
 
 /*           FORM HAPUS ADDRESSES             */
 router.get('/addresses/delete/:id', (req, res) => {
-  db.all(`DELETE FROM Address WHERE id="${req.param('id')}"`, (err, rows) => {
+  /*db.all(`DELETE FROM Address WHERE id="${req.param('id')}"`, (err, rows) => {
     console.log(err);
     res.redirect('/addresses')
-  })
+  }) */
+  Addresses.deleteData(req.params.id)
+  res.redirect('/profiles')
 })
 
 /*          FORM UPDATE ADDRESSES             */
 router.get('/addresses/edit/:id', (req, res) => {
-  db.all(`SELECT * FROM Address WHERE id = "${req.param('id')}"`, (err, rows) => {
+  /*db.all(`SELECT * FROM Address WHERE id = "${req.param('id')}"`, (err, rows) => {
     var contactquery = 'SELECT * FROM Contacts'
     db.all(contactquery, (err, rowscontact) => {
         res.render('editAddresses', {dataJSONAddresses:rows, dataJsonContact: rowscontact})
         console.log(rows);
         console.log(rowscontact);
     })
+  }) */
+  Addresses.findOne(req.params.id).then((values) => {
+    res.render('editAddresses', {dataJSONAddresses: values})
   })
 })
 
@@ -72,11 +67,13 @@ router.post('/addresses/edit/:id', (req, res) => {
   var query = "UPDATE Address SET street = '" + req.body.street + "', city = '" +
   req.body.city + "', zipcode = '" + req.body.zipcode + "', id_contact = '" + req.body.id_contact +
   "' WHERE id = " + req.param('id')
-  db.all(query, (err, rows) => {
+  /*db.all(query, (err, rows) => {
     console.log(err);
     res.redirect('../../addresses')
     console.log(rows.body);
-  })
+  }) */
+  Addresses.updateData(req)
+  res.redirect('../../addresses')
 })
 
 module.exports = router

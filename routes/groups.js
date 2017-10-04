@@ -11,35 +11,26 @@ var db = new sqlite3.Database('data.db', (err) => {
 
 /*        MENU GROUPS           */
 router.get('/groups', (req, res) => {
-  /*db.all('SELECT * FROM Groups', (err, rows) => {
-    res.render('groups', {dataJSONGroups: rows})
-    console.log(rows.body);
-  }) */
-  Groups.findAll(function(arrOfObject) {
-    console.log(arrOfObject);
-    res.render('groups', {dataJSONGroups: arrOfObject})
+
+  Groups.findAll().then((value) => {
+    res.render('groups', {dataJSONGroups: value})
   })
+
 })
 
 /*      FORM TAMBAH GROUPS        */
 router.post('/groups', (req, res) => {
-  /*db.run(`INSERT INTO Groups (name_of_group) VALUES ('${req.body.name_of_group}')`) */
-  Groups.insertData(req.body, function() {
-    res.redirect('groups')
-  })
-  //res.redirect('groups')
+
+  Groups.insertData(req.body)
+  res.redirect('groups')
+
 })
 
 
 /*         HAPUS GROUPS           */
 router.get('/delete/:id', (req, res) => {
-  /*db.all(`DELETE from Groups WHERE id = "${req.param('id')}"`,(err, rows)=>{
-    console.log(err)
-    res.redirect('/groups');
-  }); */
-  Groups.deleteData(req.params.id, function() {
-    res.redirect('/groups')
-  })
+  Groups.deleteData(req.params.id)
+  res.redirect('/groups')
 })
 
 
@@ -48,8 +39,11 @@ router.get('/edit/:id', (req, res) => {
   /*db.all(`select * from Groups where id = "${req.param('id')}"`,(err, rows)=>{
     res.render('editGroups',{dataJSONGroups:rows});
   }); */
-  Groups.findOne(req.params.id, function (rows) {
+  /*Groups.findOne(req.params.id, function (rows) {
     res.render('editGroups', {dataJSONGroups: rows})
+  }) */
+  Groups.findOne(req.params.id).then((value) => {
+    res.render('editGroups', {dataJSONGroups: value})
   })
 })
 

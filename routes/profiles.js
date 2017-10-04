@@ -26,7 +26,7 @@ router.get('/profiles', (req, res) => {
     })
   }) */
 
-  Profile.findAll(function (arrOfObjectProfile) {
+  /*Profile.findAll(function (arrOfObjectProfile) {
     Contact.findAll(function(arrOfObjectContact) {
 
       for(var i = 0; i < arrOfObjectProfile.length; i++) {
@@ -40,13 +40,27 @@ router.get('/profiles', (req, res) => {
     res.render('profile', {data: " " , dataJSONProfile: arrOfObjectProfile, dataJsonContact: arrOfObjectContact})
 
     })
+  }) */
+
+  Profile.findAll().then((valueProfile) => {
+    Contact.findAll().then((valueContact) => {
+      for(var i = 0; i < valueProfile.length; i++) {
+        for(var j = 0; j < valueContact.length; j++) {
+          if(valueProfile[i].id_contact == valueContact[j].id) {
+            valueProfile[i].nama = valueContact[j].nama
+          }
+        }
+      }
+      res.render('profile', {data: " ", dataJSONProfile: valueProfile, dataJsonContact: valueContact} )
+    })
   })
+
 })
 
 
 /*       FORM TAMBAH PROFILE       */
 router.post('/profiles', (req, res) => {
-  db.run(`INSERT INTO Profile (username, password, id_contact) VALUES ('${req.body.username}', '${req.body.password}', '${req.body.id_contact}')`, (err) => {
+  /*db.run(`INSERT INTO Profile (username, password, id_contact) VALUES ('${req.body.username}', '${req.body.password}', '${req.body.id_contact}')`, (err) => {
     if(err) {
       var joinquery = "SELECT * FROM Profile LEFT JOIN Contacts ON Contacts.id = Profile.id_contact"
       var contactquery = 'SELECT * FROM Contacts'
@@ -64,16 +78,16 @@ router.post('/profiles', (req, res) => {
     }
   })
   //res.redirect('profile')
-  console.log(req.body);
+  console.log(req.body); */
+  Profile.insertData(req.body)
+  res.redirect('/profiles')
 })
 
 
 /*       FORM HAPUS PROFILE       */
 router.get('/profiles/delete/:id', (req, res) => {
-  db.all(`DELETE FROM Profile WHERE id="${req.param('id')}"`, (err, rows) => {
-    console.log(err);
-    res.redirect('/profiles')
-  })
+  Profile.deleteData(req.params.id)
+  res.redirect('/profiles')
 })
 
 /*             UPDATE PROFILE              */
@@ -82,20 +96,26 @@ router.get('/edit/:id', (req, res) => {
 
   var contactquery = 'SELECT * FROM Contacts'
 
-  db.all(`SELECT * FROM Profile WHERE id = "${req.param('id')}"`, (err, rows) => {
+  /*db.all(`SELECT * FROM Profile WHERE id = "${req.param('id')}"`, (err, rows) => {
     console.log(rows);
     res.render('editProfile', {dataJSONProfile:rows})
+  }) */
+  Profile.findOne(req.params.id).then((value) => {
+    res.render('editProfile', {dataJSONProfile: value})
   })
 })
 
 
 router.post('/edit/:id', (req, res) => {
   var query = "UPDATE Profile SET username = '" + req.body.username + "', password = '" + req.body.password + "' WHERE id = " + req.param('id')
-  db.all(query, (err, rows) => {
+  /*db.all(query, (err, rows) => {
     console.log(err);
     res.redirect('../../profiles')
     console.log(rows.body);
-  })
+
+  }) */
+    Profile.updateData(req)
+    res.redirect('../../profiles')
 })
 
 
