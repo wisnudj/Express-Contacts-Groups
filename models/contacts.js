@@ -43,7 +43,11 @@ class Contacts {
     }
 
     static deleteData(reqBody) {
-      db.all(`DELETE from Contacts WHERE id = "${reqBody}"`)
+      var object_promise = new Promise((resolve, reject) => {
+        db.all(`DELETE FROM Contacts WHERE id = "${reqBody}"`)
+      })
+      //db.all(`DELETE from Contacts WHERE id = "${reqBody}"`)
+      return object_promise
     }
 
     static findOne(reqBody) {
@@ -60,16 +64,15 @@ class Contacts {
     }
 
     static updateData(req) {
-      var str = "update Contacts set nama ='" +req.body.nama+ "',";
-      str += "company = '" +req.body.company+"',";
-      str += "telp_number = '"+req.body.telp_number+"',";
-      str += "email = '"+req.body.email+"'";
-      str += "WHERE id = "+req.param('id');
-      db.all(str,(err)=>{
-        if(err) {
-          console.log('error');
-        }
-      });
+      var object_promise = new Promise((resolve, reject) => {
+        var str = "update Contacts set nama ='" +req.body.nama+ "',";
+        str += "company = '" +req.body.company+"',";
+        str += "telp_number = '"+req.body.telp_number+"',";
+        str += "email = '"+req.body.email+"'";
+        str += "WHERE id = "+req.param('id');
+        db.all(str);
+      })
+      return object_promise
     }
 }
 

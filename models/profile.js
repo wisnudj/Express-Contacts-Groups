@@ -41,7 +41,10 @@ class Profile {
   }
 
   static deleteData(reqBody) {
-    db.all(`DELETE FROM Profile WHERE id = "${reqBody}"`)
+    var object_promise = new Promise((resolve, reject) => {
+      db.all(`DELETE FROM Profile WHERE id = "${reqBody}"`)
+    })
+    return object_promise
   }
 
   static findOne(reqBody) {

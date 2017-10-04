@@ -29,11 +29,17 @@ class Groups {
   }
 
   static insertData(reqBody) {
-    db.run(`INSERT INTO Groups (name_of_group) VALUES ('${reqBody.name_of_group}')`)
+    var object_promise = new Promise((resolve, reject) => {
+      db.run(`INSERT INTO Groups (name_of_group) VALUES ('${reqBody.name_of_group}')`)
+    })
+    return object_promise
   }
 
-  static deleteData(reqBody, cb) {
-    db.all(`DELETE from Groups WHERE id = "${reqBody}"`)
+  static deleteData(reqBody) {
+    var object_promise = new Promise((resolve, reject) => {
+      db.all(`DELETE from Groups WHERE id = "${reqBody}"`)
+    })
+    return object_promise
   }
 
   static findOne(reqBody) {
@@ -49,8 +55,10 @@ class Groups {
   }
 
   static updateData(req) {
-    var query = "UPDATE Groups set name_of_group ='" +req.body.name_of_group+ "'" + "WHERE id = "+req.param('id')
-    db.all(query)
+    var object_promise = new Promise((resolve, reject) => {
+      var query = "UPDATE Groups set name_of_group ='" +req.body.name_of_group+ "'" + "WHERE id = "+req.param('id')
+      db.all(query)
+    })
   }
 }
 
