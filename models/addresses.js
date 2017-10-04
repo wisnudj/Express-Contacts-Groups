@@ -61,6 +61,15 @@ class Addresses {
     return object_promise
   }
 
+  static findByidContact(id) {
+    var object_promise = new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM Address WHERE id_contact = "${id}"`, (err, rows) => {
+        resolve(rows)
+      })
+    })
+    return object_promise
+  }
+
 }
 
 module.exports = Addresses

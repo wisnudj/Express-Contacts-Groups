@@ -31,7 +31,11 @@ class Profile {
   static insertData(arrOfObject) {
     var object_promise = new Promise((resolve, reject) => {
       var profile = new Profile(arrOfObject)
-      db.run(`INSERT INTO Profile (username, password, id_contact) VALUES ('${profile.username}', '${profile.password}', '${profile.id_contact}')`)
+      db.run(`INSERT INTO Profile (username, password, id_contact) VALUES ('${profile.username}', '${profile.password}', '${profile.id_contact}')`, (err) => {
+        if(err) {
+          resolve('')
+        }
+      })
     })
     return object_promise
   }
@@ -61,6 +65,8 @@ class Profile {
     })
     return object_promise
   }
+
+
 }
 
 module.exports = Profile

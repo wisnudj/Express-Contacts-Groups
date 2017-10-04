@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 var Contact = require('../models/contacts')
+var Addresses = require('../models/addresses')
 const sqlite3 = require('sqlite3').verbose();
 
 var db = new sqlite3.Database('data.db', (err) => {
@@ -56,18 +57,32 @@ router.post('/edit/:id', (req, res) => {
 })
 
 router.get('/contacts/addresses/:id', (req, res) => {
-  db.all(`SELECT * FROM Address where id_contact ="${req.param('id')}"`, (err, rows) => {
+  /*db.all(`SELECT * FROM Address where id_contact ="${req.param('id')}"`, (err, rows) => {
     db.all(`SELECT * FROM Contacts where id = "${req.param('id')}"`, (er, rowscontact) => {
       res.render('contactAddress', {dataJSONAddresses: rows, dataJsonContact: rowscontact})
+    })
+  }) */
+  Addresses.findByidContact(req.params.id).then((valuesAddress) => {
+    Contact.findOne(req.params.id).then((valueContact)=> {
+      console.log(valuesAddress);
+      console.log(valueContact);
+      res.render('contactAddress', {dataJSONAddresses: valuesAddress, dataJsonContact: valueContact})
     })
   })
 })
 
 router.post('/contacts/addresses/:id', (req, res) => {
-  db.all(`SELECT * FROM Contacts`, (err, rowscontact) => {
+  /*db.all(`SELECT * FROM Contacts`, (err, rowscontact) => {
     db.run(`INSERT INTO Address (street, city, zipcode, id_contact) VALUES ('${req.body.street}', '${req.body.city}', '${req.body.zipcode}', "${req.param('id')}")`)
     res.render('contacts', {dataJsonContact: rowscontact})
+  }) */
+  Contact.findAll().then((valueContact) => {
+    Addresses.insertData(req.body)
+    res.render('contacts', {dataJsonContact: valueContact})
   })
 })
+
+
+
 
 module.exports = router

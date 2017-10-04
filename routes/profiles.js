@@ -79,7 +79,11 @@ router.post('/profiles', (req, res) => {
   })
   //res.redirect('profile')
   console.log(req.body); */
-  Profile.insertData(req.body)
+  Profile.insertData(req.body).then((value) => {
+    if(value = '') {
+      res.send('mbahmu')
+    }
+  })
   res.redirect('/profiles')
 })
 
