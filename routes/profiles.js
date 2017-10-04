@@ -13,16 +13,32 @@ var db = new sqlite3.Database('data.db', (err) => {
 
 /*        MENU PROFILE            */
 router.get('/profiles', (req, res) => {
-  var joinquery = "SELECT Profile.id, Profile.username, Profile.password, Contacts.nama FROM Profile LEFT JOIN Contacts ON Contacts.id = Profile.id_contact"
+  var joinquery = "SELECT Profile.id, Profile.username, Profile.password, Profile.id_contact, Contacts.nama FROM Profile LEFT JOIN Contacts ON Contacts.id = Profile.id_contact"
   var contactquery = 'SELECT * FROM Contacts'
-  // var query = 'SELECT * FROM Profile'
-  db.all(joinquery, (err, rows) => {
-    //res.send(rows)
-    // console.log(rows);
+  var profilesquery = `SELECT * FROM Profile`
+
+  /*db.all(profilesquery, (err, rows) => {
     db.all(contactquery, (err, rowscontact) => {
-      //res.send(rows)
       console.log(rows);
+      console.log(rowscontact);
+      console.log(rows[]);
       res.render('profile', {data: " " , dataJSONProfile: rows, dataJsonContact: rowscontact})
+    })
+  }) */
+
+  Profile.findAll(function (arrOfObjectProfile) {
+    Contact.findAll(function(arrOfObjectContact) {
+
+      for(var i = 0; i < arrOfObjectProfile.length; i++) {
+      for(var j = 0; j < arrOfObjectContact.length; j++) {
+        if(arrOfObjectProfile[i].id_contact == arrOfObjectContact[j].id) {
+          arrOfObjectProfile[i].nama = arrOfObjectContact[j].nama
+        }
+      }
+    }
+
+    res.render('profile', {data: " " , dataJSONProfile: arrOfObjectProfile, dataJsonContact: arrOfObjectContact})
+
     })
   })
 })

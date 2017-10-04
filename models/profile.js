@@ -1,20 +1,29 @@
+const sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('data.db', (err) => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log('Connected to the in-memory SQlite database.');
+});
+
 class Profile {
-  constructor(id, id_contact, username, password) {
-    this.id = id;
-    this.id_contact = id_contact;
-    this.username = username;
-    this.password = password;
+  constructor(data) {
+    this.id = data.id;
+    this.username = data.username;
+    this.password = data.password;
+    this.id_contact = data.id_contact;
   }
 
   static findAll(cb) {
-    var profilequery = 'SELECT * FROM Profile';
-    db.all(profilequery, (err, rows) => {
-      let arr = [];
-      rows.forEach((row) => {
-        let obj = new Profile(row.id, row.id_contact, row.username, row.password);
-        arr.push(obj);
-      })
-      cb(arr);
+    db.all(`SELECT * FROM Profile`, (err, rows) => {
+      var arrOfObject = []
+
+      for(var i = 0; i < rows.length; i++) {
+        arrOfObject.push(new Profile(rows[i]))
+      }
+      cb(arrOfObject)
     })
   }
 }
+
+module.exports = Profile

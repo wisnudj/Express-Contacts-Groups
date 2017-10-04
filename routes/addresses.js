@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-
+const Addresses = require('../models/addresses')
+const Contact = require('../models/contacts')
 const sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('data.db', (err) => {
   if (err) {
@@ -12,12 +13,29 @@ var db = new sqlite3.Database('data.db', (err) => {
 
 /*             MENU Addresses             */
 router.get('/addresses', (req, res) => {
-  var joinqueryaddress = "SELECT Address.id, Address.street, Address.city, Address.zipcode, Contacts.nama FROM Address LEFT JOIN Contacts ON Contacts.id = Address.id_contact"
+  /*var joinqueryaddress = "SELECT Address.id, Address.street, Address.city, Address.zipcode, Contacts.nama FROM Address LEFT JOIN Contacts ON Contacts.id = Address.id_contact"
   var contactquery = 'SELECT * FROM Contacts'
 
   db.all(joinqueryaddress, (err, rows) => {
     db.all(contactquery, (err, rowscontact) => {
         res.render('addresses', {dataJSONAddresses: rows, dataJsonContact: rowscontact})
+    })
+  }) */
+
+  Addresses.findAll(function(arrOfObjectAddresses) {
+    Contact.findAll(function(arrOfObjectContact) {
+      //arrOfObjectAddresses[0].nama = 'wisnu'
+      console.log(arrOfObjectAddresses[0]);
+      for(var i = 0; i < arrOfObjectAddresses.length; i++) {
+      for(var j = 0; j < arrOfObjectContact.length; j++) {
+        if(arrOfObjectAddresses[i].id_contact == arrOfObjectContact[j].id) {
+          arrOfObjectAddresses[i].nama = arrOfObjectContact[j].nama
+        }
+      }
+    }
+
+      console.log(arrOfObjectAddresses);
+      res.render('addresses', {dataJSONAddresses: arrOfObjectAddresses, dataJsonContact: arrOfObjectContact})
     })
   })
 })

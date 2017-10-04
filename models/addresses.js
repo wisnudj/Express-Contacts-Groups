@@ -6,12 +6,13 @@ var db = new sqlite3.Database('data.db', (err) => {
   console.log('Connected to the in-memory SQlite database.');
 });
 
-class addresses {
+class Addresses {
   constructor(data) {
     this.id = data.id
     this.street = data.street
     this.city = data.city
     this.zipcode = data.zipcode
+    this.id_contact = data.id_contact
   }
 
   static findAll(cb) {
@@ -19,11 +20,11 @@ class addresses {
       var arrOfObject = []
 
       for(var i = 0; i < rows.length; i++) {
-        arrOfObject.push(new Contacts(rows[i]))
+        arrOfObject.push(new Addresses(rows[i]))
       }
-      cb(arrOfObject)      
+      cb(arrOfObject)
     })
   }
 }
 
-module.exports = Contacts
+module.exports = Addresses
